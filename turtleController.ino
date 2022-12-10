@@ -1,30 +1,50 @@
 #include <Wire.h>
-#include <RTC.h>
-#define relay 4
-bool isSetTime = false; // Установка времени
+#include <I2C_RTC.h> // https://github.com/cvmanjoo/RTC
+
+#define UVrelay 4
+#define IKrelay 5 // Normally closed relay, invert HIGH and LOW
+
+// Set date, time, week
+#define date 10,12,22
+#define time 14,45,00
+#define week 6 // 1 - Monday, 2 - Tuesday, etc.
+// Set uv and ik lamps working period
+#define uvOnHour 8
+#define uvOffHour 14
+#define ikOnHour 8
+#define ikOffHour 23
+
+bool isSetTime = false; // True if want set up time
 static PCF8563 RTC;
 
 void taskSetTime() {
-  RTC.setDate(15, 05, 22);
-  RTC.setTime(14, 45, 00);
-  RTC.setWeek(1); // 1 - Воскресенье
+  RTC.setDate(date);
+  RTC.setTime(time);
+  RTC.setWeek(week);
 }
 
 void taskSetRelay() {
-  if (RTC.getHours() >= 6 && RTC.getHours() <= 13) {
-    digitalWrite(relay, LOW);
-  }
-  else if (RTC.getHours() >= 16 && RTC.getHours() <= 22) {
-    digitalWrite(relay, LOW);
+  if (RTC.getHours() >= uvOnHour-1 && RTC.getHours() <= uvOffHour-1) {
+    digitalWrite(UVrelay, LOW);
   }
   else {
-    digitalWrite(relay, HIGH);
+    digitalWrite(UVrelay, HIGH);
+  }
+
+  if (RTC.getHours() >= ikOnHour-1 && RTC.getHours() <= ikOffHour-1) { // Normally closed relay
+    digitalWrite(IKrelay, HIGH);
+  }
+  else {
+    digitalWrite(IKrelay, LOW);
   }
 }
 
 void setup() {
   RTC.begin();
-  pinMode(relay, OUTPUT);
+
+  pinMode(UVrelay, OUTPUT);
+  pinMode(IKrelay, OUTPUT);
+
   if (isSetTime) {
     taskSetTime();
   }

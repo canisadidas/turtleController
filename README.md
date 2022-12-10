@@ -5,7 +5,7 @@
 Set relay ports if using different
     #define UVrelay 4
     #define IKrelay 5
-
+    
 Set your date, time and week
     #define date 10,12,22
     #define time 14,45,00

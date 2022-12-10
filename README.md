@@ -1,23 +1,29 @@
 # turtleController
 
+turtleController is arduino based controller for terrariums and aquaterrariums
+
 ## Setting
 
 Set relay ports if using different
+
     #define UVrelay 4
     #define IKrelay 5
     
 Set your date, time and week
+
     #define date 10,12,22
     #define time 14,45,00
-    #define week 6 # 1- Monday, 2 - Tuesday, etc.
+    #define week 6 // 1- Monday, 2 - Tuesday, etc.
 
 Set working period
+
     #define uvOnHour 8
     #define uvOffHour 14
     #define ikOnHour 8
     #define ikOffHour 23
 
 Set <code>true</code> to rewrite time
+
     bool isSetTime = false;
     
 ## List of components

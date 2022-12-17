@@ -5,9 +5,9 @@
 #define IKrelay 5 // Normally closed relay, invert HIGH and LOW
 
 // Set date, time, week
-#define date 10,12,22
-#define time 14,45,00
-#define week 6 // 1 - Monday, 2 - Tuesday, etc.
+#define date 17,12,22
+#define time 13,19,00
+#define week 7 // 1 - Sunday, 2 - Monday, etc.
 // Set uv and ik lamps working period
 #define uvOnHour 8
 #define uvOffHour 14

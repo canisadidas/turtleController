@@ -7,9 +7,9 @@ RTC_DS3231 rtc;
 
 // Set uv and ik lamps working period
 #define uvOnHour 7
-#define uvOffHour 12 //13
+#define uvOffHour 13
 #define ikOnHour 7
-#define ikOffHour 20 //21
+#define ikOffHour 21
 
 void setup () {
   Serial.begin(57600);
@@ -32,14 +32,14 @@ void setup () {
 void loop () {
   DateTime now = rtc.now();
 
-  if (now.hour() >= uvOnHour && now.hour() <= uvOffHour) {
+  if (now.hour() >= uvOnHour && now.hour() <= uvOffHour - 1) {
     digitalWrite(UVrelay, LOW);
   }
   else {
     digitalWrite(UVrelay, HIGH);
   }
 
-  if (now.hour() >= ikOnHour && now.hour() <= ikOffHour) { // Normally closed relay
+  if (now.hour() >= ikOnHour && now.hour() <= ikOffHour - 1) { // Normally closed relay
     digitalWrite(IKrelay, HIGH);
   }
   else {

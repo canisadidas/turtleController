@@ -7,12 +7,31 @@ RTC_DS3231 rtc;
 
 // Set uv and ik lamps working period
 #define uvOnHour 7
-#define uvOffHour 20
+#define uvOffHour 12 //13
 #define ikOnHour 7
-#define ikOffHour 20
+#define ikOffHour 20 //21
 
-void taskSetRelay() {
+void setup () {
+  Serial.begin(57600);
+
+  pinMode(UVrelay, OUTPUT);
+  pinMode(IKrelay, OUTPUT);
+
+  if (! rtc.begin()) {
+    Serial.println("Couldn't find RTC");
+    Serial.flush();
+    while (1) delay(10);
+  }
+
+  if (rtc.lostPower()) {
+    Serial.println("RTC lost power, let's set the time!");
+    rtc.adjust(DateTime(F(__DATE__), F(__TIME__)));
+  }
+}
+
+void loop () {
   DateTime now = rtc.now();
+
   if (now.hour() >= uvOnHour && now.hour() <= uvOffHour) {
     digitalWrite(UVrelay, LOW);
   }
@@ -26,21 +45,4 @@ void taskSetRelay() {
   else {
     digitalWrite(IKrelay, LOW);
   }
-}
-
-void setup() {
-  Serial.begin(9600);
-  pinMode(UVrelay, OUTPUT);
-  pinMode(IKrelay, OUTPUT);
-}
-
-void loop() {
-  //taskSetRelay();
-  DateTime now = rtc.now();
-  Serial.print(now.hour(), DEC);
-    Serial.print(':');
-    Serial.print(now.minute(), DEC);
-    Serial.print(':');
-    Serial.print(now.second(), DEC);
-    Serial.println();
 }
